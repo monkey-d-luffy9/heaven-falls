@@ -127,7 +127,8 @@ const gameService = {
                 imageUrl: data.imageUrl,
                 minReward: data.minReward || 5,
                 maxReward: data.maxReward || 50,
-                cooldownHours: data.cooldownHours || 24
+                cooldownHours: data.cooldownHours || 24,
+                vipTierRequired: data.vipTierRequired || 'BRONZE'
             }
         });
     },
