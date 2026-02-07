@@ -44,7 +44,8 @@ export default function BonusesPage() {
     };
 
     const getBonusIcon = (type) => {
-        switch (type) {
+        const bonusType = (type || '').toLowerCase();
+        switch (bonusType) {
             case 'daily_login': return <Gift size={24} />;
             case 'weekly': return <Sparkles size={24} />;
             case 'streak': return <Flame size={24} />;
@@ -90,10 +91,10 @@ export default function BonusesPage() {
                 {bonuses.map(bonus => (
                     <div key={bonus.id} className={`bonus-card ${!bonus.isAvailable ? 'on-cooldown' : ''}`}>
                         <div className="bonus-header">
-                            <div className={`bonus-icon ${bonus.bonusType}`}>
-                                {getBonusIcon(bonus.bonusType)}
+                            <div className={`bonus-icon ${(bonus.type || '').toLowerCase()}`}>
+                                {getBonusIcon(bonus.type)}
                             </div>
-                            <span className="bonus-type">{bonus.bonusType.replace('_', ' ')}</span>
+                            <span className="bonus-type">{(bonus.type || '').replace('_', ' ')}</span>
                         </div>
 
                         <h3>{bonus.name}</h3>
@@ -136,7 +137,7 @@ export default function BonusesPage() {
                                 <Clock size={16} />
                                 <span>Available in:</span>
                                 <CountdownTimer
-                                    targetDate={bonus.nextAvailableAt}
+                                    targetDate={bonus.nextAvailable}
                                     onComplete={loadBonuses}
                                 />
                             </div>

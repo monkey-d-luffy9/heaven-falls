@@ -286,6 +286,25 @@
     justify-content: center;
 }
 
+.game-result.tryagain {
+    background: rgba(255, 159, 67, 0.1);
+    border: 1px solid rgba(255, 159, 67, 0.3);
+}
+
+.game-result.tryagain svg {
+    color: #FF9F43;
+    flex-shrink: 0;
+}
+
+.game-result.tryagain .result-label {
+    color: #FF9F43;
+}
+
+.game-result.tryagain .result-value {
+    color: var(--text-secondary);
+    font-size: var(--font-md);
+}
+
 .game-result>div {
     display: flex;
     flex-direction: column;

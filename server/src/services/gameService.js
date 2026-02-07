@@ -81,9 +81,31 @@ const gameService = {
         const user = await prisma.user.findUnique({ where: { id: userId } });
         const multiplier = userService.getVipMultiplier(user.vipTier);
 
-        // Calculate reward (whole number)
-        const baseReward = Math.random() * (game.maxReward - game.minReward) + game.minReward;
-        const reward = Math.round(baseReward * multiplier);
+        // Calculate reward using custom segments if available
+        let reward = 0;
+        let rewardLabel = null;
+        let segmentIndex = 0;
+
+        if (game.rewardSegments) {
+            try {
+                const segments = JSON.parse(game.rewardSegments);
+                if (segments && segments.length > 0) {
+                    // Pick a random segment
+                    segmentIndex = Math.floor(Math.random() * segments.length);
+                    const segment = segments[segmentIndex];
+                    reward = Math.round((segment.value || 0) * multiplier);
+                    rewardLabel = segment.label || null;
+                }
+            } catch (e) {
+                // If JSON parsing fails, fall back to min/max
+                const baseReward = Math.random() * (game.maxReward - game.minReward) + game.minReward;
+                reward = Math.round(baseReward * multiplier);
+            }
+        } else {
+            // Fallback to min/max random
+            const baseReward = Math.random() * (game.maxReward - game.minReward) + game.minReward;
+            reward = Math.round(baseReward * multiplier);
+        }
 
         // Record game play
         await prisma.gameHistory.create({
@@ -102,18 +124,31 @@ const gameService = {
             }
         });
 
-        // Add credits
-        await userService.addCredits(
-            userId,
-            reward,
-            'GAME_WIN',
-            `Won ${reward} credits from ${game.name}`
-        );
+        // Add credits only if reward > 0 (not "Try Again")
+        if (reward > 0) {
+            await userService.addCredits(
+                userId,
+                reward,
+                'GAME_WIN',
+                `Won ${reward} credits from ${game.name}`
+            );
+        }
+
+        // Parse segments for frontend display
+        let segments = [];
+        try {
+            if (game.rewardSegments) {
+                segments = JSON.parse(game.rewardSegments);
+            }
+        } catch (e) { }
 
         return {
             game,
             reward,
-            multiplier
+            multiplier,
+            segmentIndex,
+            rewardLabel,
+            segments
         };
     },
 

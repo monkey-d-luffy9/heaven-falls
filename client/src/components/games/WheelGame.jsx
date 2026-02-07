@@ -7,23 +7,43 @@ export default function WheelGame({ game, onPlay, onClose, result, playing, isAv
     const [isSpinning, setIsSpinning] = useState(false);
     const wheelRef = useRef(null);
 
-    const segments = game.bonusOptions || [
-        { value: 5, label: '5', color: '#FF6B6B' },
-        { value: 10, label: '10', color: '#4ECDC4' },
-        { value: 25, label: '25', color: '#45B7D1' },
-        { value: 50, label: '50', color: '#96CEB4' },
-        { value: 100, label: '100', color: '#FFEAA7' },
-        { value: 500, label: '500', color: '#DDA0DD' }
+    // Parse segments from game.rewardSegments JSON or use default
+    const defaultSegments = [
+        { value: 5, label: '5' },
+        { value: 10, label: '10' },
+        { value: 25, label: '25' },
+        { value: 0, label: 'Try Again' },
+        { value: 50, label: '50' },
+        { value: 100, label: '100' }
     ];
 
+    let segments = defaultSegments;
+    try {
+        if (game.rewardSegments) {
+            const parsed = JSON.parse(game.rewardSegments);
+            segments = parsed.map((seg, i) => ({
+                value: seg.value,
+                label: seg.label || String(seg.value)
+            }));
+        } else if (result?.segments) {
+            segments = result.segments.map(seg => ({
+                value: seg.value,
+                label: seg.label || String(seg.value)
+            }));
+        }
+    } catch (e) { }
+
+    // Assign colors to segments
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#FF9F43', '#A29BFE'];
+    segments = segments.map((seg, i) => ({ ...seg, color: colors[i % colors.length] }));
+
     useEffect(() => {
-        // Backend returns { game, reward, multiplier } - not prize object
+        // Backend returns { game, reward, multiplier, segmentIndex, rewardLabel }
         if (result && result.reward !== undefined && !result.error) {
-            // Calculate which segment to land on based on reward value
-            const rewardValue = result.reward;
-            // Find closest segment
-            let segmentIndex = segments.findIndex(s => s.value >= rewardValue);
-            if (segmentIndex === -1) segmentIndex = segments.length - 1;
+            // Use the actual segment index from backend
+            const segmentIndex = result.segmentIndex !== undefined
+                ? result.segmentIndex
+                : Math.floor(Math.random() * segments.length);
 
             const segmentAngle = 360 / segments.length;
 
@@ -114,13 +134,22 @@ export default function WheelGame({ game, onPlay, onClose, result, playing, isAv
             </div>
 
             {result && result.reward !== undefined && !result.error && !isSpinning && (
-                <div className="game-result success">
+                <div className={`game-result ${result.reward === 0 ? 'tryagain' : 'success'}`}>
                     <Sparkles size={24} />
                     <div>
-                        <span className="result-label">You won!</span>
-                        <span className="result-value">{Math.round(result.reward)} Credits</span>
-                        {result.multiplier > 1 && (
-                            <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
+                        {result.reward === 0 ? (
+                            <>
+                                <span className="result-label">{result.rewardLabel || 'Try Again!'}</span>
+                                <span className="result-value">Better luck next time!</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="result-label">You won!</span>
+                                <span className="result-value">{Math.round(result.reward)} Credits</span>
+                                {result.multiplier > 1 && (
+                                    <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

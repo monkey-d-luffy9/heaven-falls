@@ -15,7 +15,8 @@ export default function AdminGames() {
         minReward: '5',
         maxReward: '100',
         cooldownHours: '24',
-        vipTierRequired: 'BRONZE'
+        vipTierRequired: 'BRONZE',
+        rewardSegments: '[{"value":5},{"value":10},{"value":15},{"value":20},{"value":25},{"value":0,"label":"Try Again"},{"value":30},{"value":50}]'
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -44,7 +45,8 @@ export default function AdminGames() {
             minReward: '5',
             maxReward: '100',
             cooldownHours: '24',
-            vipTierRequired: 'BRONZE'
+            vipTierRequired: 'BRONZE',
+            rewardSegments: '[{"value":5},{"value":10},{"value":15},{"value":20},{"value":25},{"value":0,"label":"Try Again"},{"value":30},{"value":50}]'
         });
         setShowModal(true);
     };
@@ -58,7 +60,8 @@ export default function AdminGames() {
             minReward: String(game.minReward),
             maxReward: String(game.maxReward),
             cooldownHours: String(game.cooldownHours),
-            vipTierRequired: game.vipTierRequired
+            vipTierRequired: game.vipTierRequired,
+            rewardSegments: game.rewardSegments || '[{"value":5},{"value":10},{"value":0,"label":"Try Again"}]'
         });
         setShowModal(true);
     };
@@ -73,7 +76,8 @@ export default function AdminGames() {
                 minReward: parseFloat(formData.minReward),
                 maxReward: parseFloat(formData.maxReward),
                 cooldownHours: parseInt(formData.cooldownHours),
-                vipTierRequired: formData.vipTierRequired
+                vipTierRequired: formData.vipTierRequired,
+                rewardSegments: formData.rewardSegments
             };
 
             if (editingGame) {
@@ -267,6 +271,22 @@ export default function AdminGames() {
                                     <option value="PLATINUM">Platinum</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Reward Segments (JSON Array)</label>
+                            <textarea
+                                className="form-input"
+                                value={formData.rewardSegments}
+                                onChange={(e) => setFormData({ ...formData, rewardSegments: e.target.value })}
+                                rows={4}
+                                placeholder='[{"value":5},{"value":10},{"value":0,"label":"Try Again"}]'
+                                style={{ fontFamily: 'monospace', fontSize: '12px' }}
+                            />
+                            <small style={{ color: 'var(--text-muted)', marginTop: '0.25rem', display: 'block' }}>
+                                Each segment has a "value" (credits) and optional "label" (e.g., "Try Again" for 0).
+                                Example: {"{"}"value": 10{"}"} or {"{"}"value": 0, "label": "Try Again"{"}"}
+                            </small>
                         </div>
 
                         <div className="modal-actions">
