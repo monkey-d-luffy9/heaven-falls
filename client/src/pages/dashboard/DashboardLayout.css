@@ -1,0 +1,21 @@
+.dashboard-layout {
+    min-height: 100vh;
+}
+
+.dashboard-main {
+    padding-top: 80px;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.loading-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}

@@ -1,0 +1,287 @@
+.games-public-page {
+    padding-top: 80px;
+}
+
+/* Hero Section */
+.games-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--gradient-primary);
+}
+
+.games-hero h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: var(--font-3xl);
+    margin-bottom: 0.5rem;
+}
+
+.games-hero p {
+    font-size: var(--font-lg);
+    opacity: 0.9;
+}
+
+/* Bonus Games Section */
+.bonus-games-section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.bonus-games-section h2 {
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+.bonus-games-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.game-feature-card {
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    transition: var(--transition-normal);
+}
+
+.game-feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.game-emoji-large {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.game-feature-card h3 {
+    font-size: var(--font-xl);
+    margin-bottom: 0.75rem;
+}
+
+.game-feature-card p {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    margin-bottom: 1.5rem;
+}
+
+.game-feature-card ul {
+    list-style: none;
+    text-align: left;
+}
+
+.game-feature-card li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.game-feature-card li svg {
+    color: var(--accent-gold);
+}
+
+.games-cta {
+    padding: 2rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-xl);
+}
+
+.games-cta p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Platforms Section */
+.platforms-section {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+    text-align: center;
+}
+
+.platforms-section h2 {
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.platform-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    transition: var(--transition-normal);
+}
+
+.platform-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--secondary);
+}
+
+.platform-card svg {
+    color: var(--secondary);
+}
+
+.platform-card.popular {
+    border-color: var(--accent-gold);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 0.25rem 0.5rem;
+    background: var(--gradient-gold);
+    color: var(--bg-primary);
+    font-size: var(--font-xs);
+    font-weight: 700;
+    border-radius: var(--radius-full);
+}
+
+/* VIP Benefits Section */
+.vip-benefits-section {
+    padding: 4rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.vip-benefits-section h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.vip-benefits-section h2 svg {
+    color: var(--accent-gold);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.benefit-card {
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.benefit-card.featured {
+    border-color: var(--accent-gold);
+    box-shadow: var(--shadow-glow-gold);
+}
+
+.benefit-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border-radius: var(--radius-lg);
+}
+
+.benefit-icon.vip-bronze {
+    background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+}
+
+.benefit-icon.vip-silver {
+    background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
+}
+
+.benefit-icon.vip-gold {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.benefit-icon.vip-platinum {
+    background: linear-gradient(135deg, #E5E4E2 0%, #B0C4DE 100%);
+}
+
+.benefit-card h4 {
+    margin-bottom: 0.5rem;
+}
+
+.multiplier {
+    display: block;
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.benefit-card p {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+/* Final CTA */
+.games-final-cta {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: var(--gradient-primary);
+}
+
+.games-final-cta h2 {
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.games-final-cta p {
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+
+    .bonus-games-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}

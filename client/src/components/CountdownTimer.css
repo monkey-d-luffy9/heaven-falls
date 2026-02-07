@@ -1,0 +1,53 @@
+.countdown {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    min-width: 50px;
+}
+
+.countdown-value {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.countdown-label {
+    font-size: var(--font-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.countdown-separator {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0 0.25rem;
+}
+
+.countdown-available {
+    color: var(--success);
+    font-weight: 600;
+    animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}

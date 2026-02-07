@@ -1,0 +1,350 @@
+.how-it-works-page {
+    padding-top: 80px;
+}
+
+/* Hero Section */
+.hiw-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--gradient-primary);
+}
+
+.hiw-hero h1 {
+    font-size: var(--font-3xl);
+    margin-bottom: 1rem;
+}
+
+.hiw-hero p {
+    font-size: var(--font-lg);
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Steps Section */
+.hiw-steps {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hiw-steps h2 {
+    text-align: center;
+    font-size: var(--font-2xl);
+    margin-bottom: 3rem;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.step-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 220px;
+    padding: 2rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: var(--font-sm);
+}
+
+.step-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    color: var(--primary);
+}
+
+.step-card h3 {
+    font-size: var(--font-base);
+    margin-bottom: 0.5rem;
+}
+
+.step-card p {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+/* Bonus Types Section */
+.hiw-bonuses {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.hiw-bonuses h2 {
+    text-align: center;
+    font-size: var(--font-2xl);
+    margin-bottom: 3rem;
+}
+
+.bonus-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.bonus-type-card {
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+}
+
+.bonus-type-card h3 {
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.bonus-type-card p {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    margin-bottom: 1rem;
+}
+
+.bonus-details {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.detail.amount {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* Games Section */
+.hiw-games {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hiw-games h2 {
+    text-align: center;
+    font-size: var(--font-2xl);
+    margin-bottom: 3rem;
+}
+
+.games-showcase {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.game-showcase-card {
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.game-emoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.game-showcase-card h3 {
+    font-size: var(--font-lg);
+    margin-bottom: 0.5rem;
+}
+
+.game-showcase-card p {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    margin-bottom: 1.5rem;
+}
+
+.game-showcase-card ul {
+    list-style: none;
+    text-align: left;
+}
+
+.game-showcase-card li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.game-showcase-card li svg {
+    color: var(--success);
+}
+
+/* VIP Section */
+.hiw-vip {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+    text-align: center;
+}
+
+.hiw-vip h2 {
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+.vip-tiers-showcase {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.vip-tier-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 220px;
+    padding: 2rem 1.5rem;
+    background: var(--bg-card);
+    border: 2px solid;
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.tier-crown {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border-radius: var(--radius-lg);
+    color: var(--bg-primary);
+}
+
+.vip-tier-card h3 {
+    font-size: var(--font-lg);
+    margin-bottom: 1rem;
+}
+
+.tier-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tier-points {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.tier-multiplier {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+/* FAQ Section */
+.hiw-faq {
+    padding: 4rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hiw-faq h2 {
+    text-align: center;
+    font-size: var(--font-2xl);
+    margin-bottom: 3rem;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.faq-item {
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+}
+
+.faq-item h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+}
+
+/* CTA Section */
+.hiw-cta {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: var(--gradient-primary);
+}
+
+.hiw-cta h2 {
+    font-size: var(--font-2xl);
+    margin-bottom: 0.5rem;
+}
+
+.hiw-cta p {
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .games-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step-card {
+        max-width: 100%;
+    }
+}

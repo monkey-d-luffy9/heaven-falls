@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  email         String?  @unique
+  password      String
+  role          Role     @default(USER)
+  bonusCredits  Float    @default(100)
+  loyaltyPoints Int      @default(0)
+  vipTier       VipTier  @default(BRONZE)
+  referralCode  String   @unique @default(cuid())
+  referredBy    String?
+  loginStreak   Int      @default(0)
+  lastLogin     DateTime?
+  gamesPlayed   Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  referrer      User?    @relation("Referrals", fields: [referredBy], references: [id])
+  referrals     User[]   @relation("Referrals")
+  transactions  Transaction[]
+  notifications Notification[]
+  gameHistory   GameHistory[]
+  bonusClaims   BonusClaim[]
+  achievements  UserAchievement[]
+
+  @@index([username])
+  @@index([email])
+  @@index([referralCode])
+}
+
+// Game model
+model Game {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  type         GameType
+  imageUrl     String?
+  minReward    Float     @default(5)
+  maxReward    Float     @default(50)
+  cooldownHours Int      @default(24)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  gameHistory  GameHistory[]
+
+  @@index([type])
+}
+
+// Game History - tracks when users play games
+model GameHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  gameId      String
+  result      Float
+  playedAt    DateTime @default(now())
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([gameId])
+  @@index([playedAt])
+}
+
+// Bonus model
+model Bonus {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  type         BonusType
+  creditAmount Float     @default(10)
+  pointsAmount Int       @default(5)
+  cooldownHours Int      @default(24)
+  streakRequired Int     @default(0)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  claims       BonusClaim[]
+
+  @@index([type])
+}
+
+// Bonus Claims - tracks when users claim bonuses
+model BonusClaim {
+  id        String   @id @default(cuid())
+  userId    String
+  bonusId   String
+  amount    Float
+  claimedAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bonus     Bonus    @relation(fields: [bonusId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([bonusId])
+  @@index([claimedAt])
+}
+
+// Transaction model
+model Transaction {
+  id              String          @id @default(cuid())
+  userId          String
+  type            TransactionType
+  creditChange    Float
+  pointsChange    Int             @default(0)
+  description     String
+  referenceId     String?
+  createdAt       DateTime        @default(now())
+
+  // Relations
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// Notification model
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+// Achievement model
+model Achievement {
+  id             String           @id @default(cuid())
+  name           String
+  description    String
+  type           AchievementType
+  requirement    Int
+  rewardCredits  Float            @default(0)
+  rewardPoints   Int              @default(0)
+  imageUrl       String?
+  createdAt      DateTime         @default(now())
+
+  // Relations
+  userAchievements UserAchievement[]
+}
+
+// User Achievements - tracks unlocked achievements
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  progress      Int         @default(0)
+  isUnlocked    Boolean     @default(false)
+  unlockedAt    DateTime?
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+}
+
+enum VipTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum GameType {
+  WHEEL
+  COOKIE
+  SCRATCH
+}
+
+enum BonusType {
+  DAILY_LOGIN
+  WEEKLY
+  STREAK
+  SPECIAL
+  REFERRAL
+}
+
+enum TransactionType {
+  GAME_WIN
+  BONUS_CLAIM
+  REFERRAL_BONUS
+  ADMIN_CREDIT
+  ACHIEVEMENT
+}
+
+enum NotificationType {
+  BONUS
+  ACHIEVEMENT
+  SYSTEM
+  PROMOTION
+}
+
+enum AchievementType {
+  GAMES
+  STREAK
+  REFERRAL
+  VIP
+}
