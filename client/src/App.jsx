@@ -63,6 +63,22 @@ function PublicLayout({ children }) {
   );
 }
 
+
+// Guest Route - redirects logged-in users to dashboard
+function GuestRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div className="loading-screen"><div className="spinner"></div></div>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+}
+
 function AppRoutes() {
   return (
     <Routes>
@@ -72,9 +88,9 @@ function AppRoutes() {
       <Route path="/how-it-works" element={<PublicLayout><HowItWorks /></PublicLayout>} />
       <Route path="/support" element={<PublicLayout><Support /></PublicLayout>} />
 
-      {/* Auth Routes */}
-      <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
-      <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+      {/* Auth Routes - redirect to dashboard if already logged in */}
+      <Route path="/login" element={<GuestRoute><PublicLayout><Login /></PublicLayout></GuestRoute>} />
+      <Route path="/register" element={<GuestRoute><PublicLayout><Register /></PublicLayout></GuestRoute>} />
 
       {/* Dashboard Routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
