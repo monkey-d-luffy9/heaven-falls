@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Gift, Sparkles } from 'lucide-react';
 import './GameComponents.css';
 
-export default function ScratchGame({ game, onPlay, result, playing, isAvailable }) {
+export default function ScratchGame({ game, onPlay, onClose, result, playing, isAvailable }) {
     const canvasRef = useRef(null);
     const [isScratching, setIsScratching] = useState(false);
     const [scratched, setScratched] = useState(false);
@@ -133,7 +133,7 @@ export default function ScratchGame({ game, onPlay, result, playing, isAvailable
                     {result && result.reward !== undefined && !result.error ? (
                         <>
                             <Sparkles size={32} className="sparkle-icon" />
-                            <span className="prize-value">{result.reward.toFixed(2)}</span>
+                            <span className="prize-value">{Math.round(result.reward)}</span>
                             <span className="prize-label">Credits!</span>
                             {result.multiplier > 1 && (
                                 <span className="vip-bonus-tag">VIP {result.multiplier}x</span>
@@ -179,7 +179,7 @@ export default function ScratchGame({ game, onPlay, result, playing, isAvailable
                     <Gift size={24} />
                     <div>
                         <span className="result-label">Congratulations!</span>
-                        <span className="result-value">{result.reward.toFixed(2)} Credits Won!</span>
+                        <span className="result-value">{Math.round(result.reward)} Credits Won!</span>
                     </div>
                 </div>
             )}
@@ -195,6 +195,17 @@ export default function ScratchGame({ game, onPlay, result, playing, isAvailable
                     <div className="spinner"></div>
                     <span>Revealing prize...</span>
                 </div>
+            )}
+
+            {/* Show Play Again after result */}
+            {result && result.reward !== undefined && !result.error && revealed && (
+                <button
+                    className="btn btn-primary btn-lg"
+                    onClick={onClose}
+                    style={{ marginTop: '1rem' }}
+                >
+                    🎮 Play Again
+                </button>
             )}
         </div>
     );

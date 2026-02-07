@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Gift, Sparkles } from 'lucide-react';
 import './GameComponents.css';
 
-export default function CookieGame({ game, onPlay, result, playing, isAvailable }) {
+export default function CookieGame({ game, onPlay, onClose, result, playing, isAvailable }) {
     const [cracked, setCracked] = useState(false);
     const [crackLevel, setCrackLevel] = useState(0);
     const [shaking, setShaking] = useState(false);
@@ -50,7 +50,7 @@ export default function CookieGame({ game, onPlay, result, playing, isAvailable 
                     {cracked && result && result.reward !== undefined && !result.error && (
                         <div className="fortune-slip">
                             <Sparkles size={20} />
-                            <span className="fortune-value">{result.reward.toFixed(2)}</span>
+                            <span className="fortune-value">{Math.round(result.reward)}</span>
                             <span>Credits!</span>
                         </div>
                     )}
@@ -74,7 +74,7 @@ export default function CookieGame({ game, onPlay, result, playing, isAvailable 
                     <Gift size={24} />
                     <div>
                         <span className="result-label">Fortune revealed!</span>
-                        <span className="result-value">{result.reward.toFixed(2)} Credits</span>
+                        <span className="result-value">{Math.round(result.reward)} Credits</span>
                         {result.multiplier > 1 && (
                             <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
                         )}
@@ -96,6 +96,17 @@ export default function CookieGame({ game, onPlay, result, playing, isAvailable 
                 >
                     <Gift size={20} />
                     Break Cookie!
+                </button>
+            )}
+
+            {/* Show Play Again after result */}
+            {result && !result.error && cracked && (
+                <button
+                    className="btn btn-primary btn-lg"
+                    onClick={onClose}
+                    style={{ marginTop: '1rem' }}
+                >
+                    🎮 Play Again
                 </button>
             )}
         </div>

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Gift, Sparkles } from 'lucide-react';
 import './GameComponents.css';
 
-export default function WheelGame({ game, onPlay, result, playing, isAvailable }) {
+export default function WheelGame({ game, onPlay, onClose, result, playing, isAvailable }) {
     const [rotation, setRotation] = useState(0);
     const [isSpinning, setIsSpinning] = useState(false);
     const wheelRef = useRef(null);
@@ -118,7 +118,7 @@ export default function WheelGame({ game, onPlay, result, playing, isAvailable }
                     <Sparkles size={24} />
                     <div>
                         <span className="result-label">You won!</span>
-                        <span className="result-value">{result.reward.toFixed(2)} Credits</span>
+                        <span className="result-value">{Math.round(result.reward)} Credits</span>
                         {result.multiplier > 1 && (
                             <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
                         )}
@@ -132,23 +132,37 @@ export default function WheelGame({ game, onPlay, result, playing, isAvailable }
                 </div>
             )}
 
-            <button
-                className="btn btn-gold btn-lg spin-btn"
-                onClick={handleSpin}
-                disabled={!isAvailable || isSpinning || playing}
-            >
-                {playing || isSpinning ? (
-                    <>
-                        <div className="spinner" style={{ width: 20, height: 20 }}></div>
-                        Spinning...
-                    </>
-                ) : (
-                    <>
-                        <Gift size={20} />
-                        Spin the Wheel!
-                    </>
-                )}
-            </button>
+            {/* Show spin button when available and no result yet */}
+            {!result && (
+                <button
+                    className="btn btn-gold btn-lg spin-btn"
+                    onClick={handleSpin}
+                    disabled={!isAvailable || isSpinning || playing}
+                >
+                    {playing || isSpinning ? (
+                        <>
+                            <div className="spinner" style={{ width: 20, height: 20 }}></div>
+                            Spinning...
+                        </>
+                    ) : (
+                        <>
+                            <Gift size={20} />
+                            Spin the Wheel!
+                        </>
+                    )}
+                </button>
+            )}
+
+            {/* Show Play Again after result */}
+            {result && !result.error && !isSpinning && (
+                <button
+                    className="btn btn-primary btn-lg"
+                    onClick={onClose}
+                    style={{ marginTop: '1rem' }}
+                >
+                    🎮 Play Again
+                </button>
+            )}
         </div>
     );
 }

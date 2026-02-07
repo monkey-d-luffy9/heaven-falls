@@ -70,6 +70,7 @@ export default function GamesPage() {
         const props = {
             game,
             onPlay: () => handlePlay(activeGame),
+            onClose: closeGame,
             result,
             playing,
             isAvailable: status?.isAvailable

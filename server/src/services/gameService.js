@@ -81,9 +81,9 @@ const gameService = {
         const user = await prisma.user.findUnique({ where: { id: userId } });
         const multiplier = userService.getVipMultiplier(user.vipTier);
 
-        // Calculate reward
+        // Calculate reward (whole number)
         const baseReward = Math.random() * (game.maxReward - game.minReward) + game.minReward;
-        const reward = Math.round(baseReward * multiplier * 100) / 100;
+        const reward = Math.round(baseReward * multiplier);
 
         // Record game play
         await prisma.gameHistory.create({
