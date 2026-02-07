@@ -66,7 +66,9 @@ export default function RewardsPage() {
         }
     ];
 
-    const currentTierIndex = vipTiers.findIndex(t => t.name === user?.vipTier);
+    // Find current tier with case-insensitive matching, default to Bronze (index 0)
+    let currentTierIndex = vipTiers.findIndex(t => t.name.toLowerCase() === (user?.vipTier?.toLowerCase() || 'bronze'));
+    if (currentTierIndex === -1) currentTierIndex = 0;
     const currentTier = vipTiers[currentTierIndex] || vipTiers[0];
     const nextTier = vipTiers[currentTierIndex + 1];
 

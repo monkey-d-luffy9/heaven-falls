@@ -55,7 +55,10 @@ export default function DashboardHome() {
             { name: 'Platinum', points: 5000 }
         ];
 
-        const currentIndex = tiers.findIndex(t => t.name === user?.vipTier);
+        // Find current tier with case-insensitive matching, default to Bronze (index 0)
+        let currentIndex = tiers.findIndex(t => t.name.toLowerCase() === (user?.vipTier?.toLowerCase() || 'bronze'));
+        if (currentIndex === -1) currentIndex = 0;
+
         const nextTier = tiers[currentIndex + 1];
 
         if (!nextTier) return { progress: 100, nextTier: null, pointsNeeded: 0 };
