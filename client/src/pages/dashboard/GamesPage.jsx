@@ -30,7 +30,7 @@ export default function GamesPage() {
             setGames(gamesData);
 
             const statusMap = {};
-            statusData.forEach(s => { statusMap[s.gameId] = s; });
+            statusData.forEach(s => { statusMap[s.id] = s; });
             setGameStatuses(statusMap);
         } catch (error) {
             console.error('Failed to load games:', error);
