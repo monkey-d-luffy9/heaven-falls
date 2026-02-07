@@ -14,13 +14,17 @@ router.use(requireAdmin);
 // Get admin stats
 router.get('/stats', async (req, res) => {
     try {
-        const [totalUsers, totalGames, totalBonuses, usersByTier] = await Promise.all([
+        const [totalUsers, activeUsers, totalGames, totalBonuses, usersByTier, totalCredits] = await Promise.all([
             prisma.user.count(),
+            prisma.user.count({ where: { isActive: true } }),
             prisma.game.count({ where: { isActive: true } }),
             prisma.bonus.count({ where: { isActive: true } }),
             prisma.user.groupBy({
                 by: ['vipTier'],
                 _count: true
+            }),
+            prisma.user.aggregate({
+                _sum: { bonusCredits: true }
             })
         ]);
 
@@ -31,7 +35,6 @@ router.get('/stats', async (req, res) => {
         const [creditsToday, gamesPlayedToday] = await Promise.all([
             prisma.transaction.aggregate({
                 where: {
-                    type: 'ADMIN_CREDIT',
                     createdAt: { gte: today }
                 },
                 _sum: { creditChange: true }
@@ -41,16 +44,23 @@ router.get('/stats', async (req, res) => {
             })
         ]);
 
+        // Build VIP distribution with proper key casing (Bronze, Silver, Gold, Platinum)
+        const vipDistribution = {};
+        usersByTier.forEach(item => {
+            // Convert BRONZE -> Bronze, etc.
+            const tierName = item.vipTier.charAt(0) + item.vipTier.slice(1).toLowerCase();
+            vipDistribution[tierName] = item._count;
+        });
+
         res.json({
             totalUsers,
+            activeUsers,
             totalGames,
             totalBonuses,
-            creditsGivenToday: creditsToday._sum.creditChange || 0,
-            gamesPlayedToday,
-            vipDistribution: usersByTier.reduce((acc, item) => {
-                acc[item.vipTier] = item._count;
-                return acc;
-            }, {})
+            todayCreditsGiven: creditsToday._sum.creditChange || 0,
+            todayGamesPlayed: gamesPlayedToday,
+            totalCreditsInCirculation: totalCredits._sum.bonusCredits || 0,
+            vipDistribution
         });
     } catch (error) {
         console.error('Get admin stats error:', error);
