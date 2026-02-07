@@ -24,6 +24,7 @@ const userService = {
     // Create a new user
     async create(data) {
         const hashedPassword = await bcrypt.hash(data.password, 10);
+        const initialCredits = data.bonusCredits !== undefined ? data.bonusCredits : 100;
 
         const user = await prisma.user.create({
             data: {
@@ -31,7 +32,7 @@ const userService = {
                 email: data.email,
                 password: hashedPassword,
                 referredBy: data.referredBy,
-                bonusCredits: 100, // Welcome bonus
+                bonusCredits: initialCredits,
                 role: data.role || 'USER'
             }
         });
@@ -41,9 +42,9 @@ const userService = {
             data: {
                 userId: user.id,
                 type: 'BONUS_CLAIM',
-                creditChange: 100,
-                pointsChange: 10,
-                description: 'Welcome bonus credits'
+                creditChange: initialCredits,
+                pointsChange: Math.floor(initialCredits / 10),
+                description: initialCredits === 100 ? 'Welcome bonus credits' : `Initial credits from admin`
             }
         });
 
@@ -52,7 +53,7 @@ const userService = {
             data: {
                 userId: user.id,
                 title: 'Welcome!',
-                message: 'You received 100 bonus credits as a welcome gift!',
+                message: `You received ${initialCredits} bonus credits as a welcome gift!`,
                 type: 'BONUS'
             }
         });

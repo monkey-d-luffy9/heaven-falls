@@ -103,7 +103,11 @@ router.get('/users/:id', async (req, res) => {
 // Create user
 router.post('/users', async (req, res) => {
     try {
-        const { username, email, password, role } = req.body;
+        const { username, email, password, role, bonusCredits } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
 
         const existing = await userService.findByUsername(username);
         if (existing) {
@@ -114,7 +118,8 @@ router.post('/users', async (req, res) => {
             username,
             email,
             password,
-            role: role || 'USER'
+            role: role || 'USER',
+            bonusCredits: parseFloat(bonusCredits) || 100 // Default 100 if not specified
         });
 
         res.status(201).json(user);
