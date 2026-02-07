@@ -200,9 +200,9 @@ export default function DashboardHome() {
                         {games.slice(0, 3).map(game => (
                             <div key={game.gameId} className={`game-card ${!game.isAvailable ? 'on-cooldown' : ''}`}>
                                 <div className="game-icon-wrapper">
-                                    {game.gameType === 'wheel' && '🎡'}
-                                    {game.gameType === 'cookie' && '🥠'}
-                                    {game.gameType === 'scratch' && '🎫'}
+                                    {(game.type || '').toLowerCase() === 'wheel' && '🎡'}
+                                    {(game.type || '').toLowerCase() === 'cookie' && '🥠'}
+                                    {(game.type || '').toLowerCase() === 'scratch' && '🎫'}
                                 </div>
                                 <h3>{game.name}</h3>
                                 {game.isAvailable ? (
@@ -213,7 +213,7 @@ export default function DashboardHome() {
                                     <div className="cooldown-timer">
                                         <Clock size={14} />
                                         <CountdownTimer
-                                            targetDate={game.nextAvailableAt}
+                                            targetDate={game.nextAvailable}
                                             onComplete={loadDashboardData}
                                         />
                                     </div>

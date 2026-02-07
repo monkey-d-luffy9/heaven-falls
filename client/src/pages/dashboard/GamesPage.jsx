@@ -75,7 +75,10 @@ export default function GamesPage() {
             isAvailable: status?.isAvailable
         };
 
-        switch (game.gameType) {
+        // Use game.type from backend (WHEEL, COOKIE, SCRATCH) - convert to lowercase
+        const gameType = (game.type || '').toLowerCase();
+
+        switch (gameType) {
             case 'wheel':
                 return <WheelGame {...props} />;
             case 'cookie':
@@ -83,7 +86,7 @@ export default function GamesPage() {
             case 'scratch':
                 return <ScratchGame {...props} />;
             default:
-                return null;
+                return <div className="game-error">Unknown game type: {game.type}</div>;
         }
     };
 
@@ -118,9 +121,9 @@ export default function GamesPage() {
                         >
                             <div className="game-card-header">
                                 <div className="game-emoji">
-                                    {game.gameType === 'wheel' && '🎡'}
-                                    {game.gameType === 'cookie' && '🥠'}
-                                    {game.gameType === 'scratch' && '🎫'}
+                                    {(game.type || '').toLowerCase() === 'wheel' && '🎡'}
+                                    {(game.type || '').toLowerCase() === 'cookie' && '🥠'}
+                                    {(game.type || '').toLowerCase() === 'scratch' && '🎫'}
                                 </div>
                                 {!status?.meetsVipRequirement && (
                                     <div className="vip-required">
@@ -135,7 +138,7 @@ export default function GamesPage() {
 
                             <div className="game-rewards">
                                 <span className="reward-range">
-                                    Win {game.minBonus} - {game.maxBonus} credits
+                                    Win {game.minReward} - {game.maxReward} credits
                                 </span>
                             </div>
 
@@ -151,7 +154,7 @@ export default function GamesPage() {
                                     <Clock size={16} />
                                     <span>Available in:</span>
                                     <CountdownTimer
-                                        targetDate={status?.nextAvailableAt}
+                                        targetDate={status?.nextAvailable}
                                         onComplete={loadGames}
                                     />
                                 </div>
