@@ -119,7 +119,7 @@ router.post('/users', async (req, res) => {
             email,
             password,
             role: role || 'USER',
-            bonusCredits: parseFloat(bonusCredits) || 100 // Default 100 if not specified
+            bonusCredits: parseFloat(bonusCredits) || 0 // Admin sets credits, default 0
         });
 
         res.status(201).json(user);

@@ -24,7 +24,7 @@ const userService = {
     // Create a new user
     async create(data) {
         const hashedPassword = await bcrypt.hash(data.password, 10);
-        const initialCredits = data.bonusCredits !== undefined ? data.bonusCredits : 100;
+        const initialCredits = data.bonusCredits !== undefined ? data.bonusCredits : 0;
 
         const user = await prisma.user.create({
             data: {
@@ -53,7 +53,7 @@ const userService = {
             data: {
                 userId: user.id,
                 title: 'Welcome!',
-                message: `You received ${initialCredits} bonus credits as a welcome gift!`,
+                message: initialCredits > 0 ? `You received ${initialCredits} bonus credits as a welcome gift!` : 'Welcome to Loyalty Hub!',
                 type: 'BONUS'
             }
         });

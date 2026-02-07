@@ -10,12 +10,12 @@ export default function AdminGames() {
     const [editingGame, setEditingGame] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        gameType: 'wheel',
+        type: 'WHEEL',
         description: '',
-        minBonus: '5',
-        maxBonus: '100',
+        minReward: '5',
+        maxReward: '100',
         cooldownHours: '24',
-        vipTierRequired: 'Bronze'
+        vipTierRequired: 'BRONZE'
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -39,12 +39,12 @@ export default function AdminGames() {
         setEditingGame(null);
         setFormData({
             name: '',
-            gameType: 'wheel',
+            type: 'WHEEL',
             description: '',
-            minBonus: '5',
-            maxBonus: '100',
+            minReward: '5',
+            maxReward: '100',
             cooldownHours: '24',
-            vipTierRequired: 'Bronze'
+            vipTierRequired: 'BRONZE'
         });
         setShowModal(true);
     };
@@ -53,10 +53,10 @@ export default function AdminGames() {
         setEditingGame(game);
         setFormData({
             name: game.name,
-            gameType: game.gameType,
-            description: game.description,
-            minBonus: String(game.minBonus),
-            maxBonus: String(game.maxBonus),
+            type: game.type,
+            description: game.description || '',
+            minReward: String(game.minReward),
+            maxReward: String(game.maxReward),
             cooldownHours: String(game.cooldownHours),
             vipTierRequired: game.vipTierRequired
         });
@@ -67,10 +67,13 @@ export default function AdminGames() {
         setError('');
         try {
             const data = {
-                ...formData,
-                minBonus: parseFloat(formData.minBonus),
-                maxBonus: parseFloat(formData.maxBonus),
-                cooldownHours: parseInt(formData.cooldownHours)
+                name: formData.name,
+                type: formData.type,
+                description: formData.description,
+                minReward: parseFloat(formData.minReward),
+                maxReward: parseFloat(formData.maxReward),
+                cooldownHours: parseInt(formData.cooldownHours),
+                vipTierRequired: formData.vipTierRequired
             };
 
             if (editingGame) {
@@ -147,18 +150,18 @@ export default function AdminGames() {
                             <td>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     <span style={{ fontSize: '1.5rem' }}>
-                                        {game.gameType === 'wheel' && '🎡'}
-                                        {game.gameType === 'cookie' && '🥠'}
-                                        {game.gameType === 'scratch' && '🎫'}
+                                        {(game.type || '').toLowerCase() === 'wheel' && '🎡'}
+                                        {(game.type || '').toLowerCase() === 'cookie' && '🥠'}
+                                        {(game.type || '').toLowerCase() === 'scratch' && '🎫'}
                                     </span>
                                     <strong>{game.name}</strong>
                                 </div>
                             </td>
-                            <td>{game.gameType}</td>
-                            <td style={{ color: 'var(--accent-gold)' }}>{game.minBonus} - {game.maxBonus}</td>
+                            <td>{(game.type || '').toLowerCase()}</td>
+                            <td style={{ color: 'var(--accent-gold)' }}>{game.minReward} - {game.maxReward}</td>
                             <td>{game.cooldownHours}h</td>
                             <td>
-                                <span className={`vip-badge vip-${game.vipTierRequired.toLowerCase()}`} style={{ padding: '0.25rem 0.5rem', fontSize: 'var(--font-xs)' }}>
+                                <span className={`vip-badge vip-${(game.vipTierRequired || 'bronze').toLowerCase()}`} style={{ padding: '0.25rem 0.5rem', fontSize: 'var(--font-xs)' }}>
                                     {game.vipTierRequired}
                                 </span>
                             </td>
@@ -201,12 +204,12 @@ export default function AdminGames() {
                             <label className="form-label">Game Type</label>
                             <select
                                 className="form-input"
-                                value={formData.gameType}
-                                onChange={(e) => setFormData({ ...formData, gameType: e.target.value })}
+                                value={formData.type}
+                                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                             >
-                                <option value="wheel">🎡 Wheel Spinner</option>
-                                <option value="cookie">🥠 Cookie Breaker</option>
-                                <option value="scratch">🎫 Scratch Card</option>
+                                <option value="WHEEL">🎡 Wheel Spinner</option>
+                                <option value="COOKIE">🥠 Cookie Breaker</option>
+                                <option value="SCRATCH">🎫 Scratch Card</option>
                             </select>
                         </div>
 
@@ -222,21 +225,21 @@ export default function AdminGames() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                             <div className="form-group">
-                                <label className="form-label">Min Bonus</label>
+                                <label className="form-label">Min Reward</label>
                                 <input
                                     type="number"
                                     className="form-input"
-                                    value={formData.minBonus}
-                                    onChange={(e) => setFormData({ ...formData, minBonus: e.target.value })}
+                                    value={formData.minReward}
+                                    onChange={(e) => setFormData({ ...formData, minReward: e.target.value })}
                                 />
                             </div>
                             <div className="form-group">
-                                <label className="form-label">Max Bonus</label>
+                                <label className="form-label">Max Reward</label>
                                 <input
                                     type="number"
                                     className="form-input"
-                                    value={formData.maxBonus}
-                                    onChange={(e) => setFormData({ ...formData, maxBonus: e.target.value })}
+                                    value={formData.maxReward}
+                                    onChange={(e) => setFormData({ ...formData, maxReward: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -258,10 +261,10 @@ export default function AdminGames() {
                                     value={formData.vipTierRequired}
                                     onChange={(e) => setFormData({ ...formData, vipTierRequired: e.target.value })}
                                 >
-                                    <option value="Bronze">Bronze</option>
-                                    <option value="Silver">Silver</option>
-                                    <option value="Gold">Gold</option>
-                                    <option value="Platinum">Platinum</option>
+                                    <option value="BRONZE">Bronze</option>
+                                    <option value="SILVER">Silver</option>
+                                    <option value="GOLD">Gold</option>
+                                    <option value="PLATINUM">Platinum</option>
                                 </select>
                             </div>
                         </div>

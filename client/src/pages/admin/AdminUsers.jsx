@@ -11,7 +11,7 @@ export default function AdminUsers() {
     const [showBonusModal, setShowBonusModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [bonusData, setBonusData] = useState({ creditAmount: '', note: '' });
-    const [createData, setCreateData] = useState({ username: '', email: '', password: '', bonusCredits: '100', role: 'USER' });
+    const [createData, setCreateData] = useState({ username: '', email: '', password: '', bonusCredits: '0', role: 'USER' });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -57,7 +57,7 @@ export default function AdminUsers() {
             await adminAPI.createUser(createData);
             setSuccess(`User ${createData.username} created successfully`);
             setShowCreateModal(false);
-            setCreateData({ username: '', email: '', password: '', bonusCredits: '100', role: 'USER' });
+            setCreateData({ username: '', email: '', password: '', bonusCredits: '0', role: 'USER' });
             loadUsers();
         } catch (err) {
             setError(err.message);
