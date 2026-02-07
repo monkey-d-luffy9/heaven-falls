@@ -47,10 +47,10 @@ export default function CookieGame({ game, onPlay, result, playing, isAvailable 
                         {crackLevel >= 2 && <div className="crack crack-2"></div>}
                     </div>
 
-                    {cracked && result && !result.error && (
+                    {cracked && result && result.reward !== undefined && !result.error && (
                         <div className="fortune-slip">
                             <Sparkles size={20} />
-                            <span className="fortune-value">{result.prize.finalCredits}</span>
+                            <span className="fortune-value">{result.reward.toFixed(2)}</span>
                             <span>Credits!</span>
                         </div>
                     )}
@@ -69,14 +69,14 @@ export default function CookieGame({ game, onPlay, result, playing, isAvailable 
                 )}
             </div>
 
-            {result && !result.error && (
+            {result && result.reward !== undefined && !result.error && (
                 <div className="game-result success">
                     <Gift size={24} />
                     <div>
                         <span className="result-label">Fortune revealed!</span>
-                        <span className="result-value">{result.prize.finalCredits} Credits</span>
-                        {result.prize.vipBonus && (
-                            <span className="vip-bonus">VIP Bonus: {result.prize.vipBonus}</span>
+                        <span className="result-value">{result.reward.toFixed(2)} Credits</span>
+                        {result.multiplier > 1 && (
+                            <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
                         )}
                     </div>
                 </div>

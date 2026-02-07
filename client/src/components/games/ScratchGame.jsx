@@ -130,13 +130,13 @@ export default function ScratchGame({ game, onPlay, result, playing, isAvailable
 
             <div className="scratch-card">
                 <div className="scratch-prize">
-                    {result && !result.error ? (
+                    {result && result.reward !== undefined && !result.error ? (
                         <>
                             <Sparkles size={32} className="sparkle-icon" />
-                            <span className="prize-value">{result.prize.finalCredits}</span>
+                            <span className="prize-value">{result.reward.toFixed(2)}</span>
                             <span className="prize-label">Credits!</span>
-                            {result.prize.vipBonus && (
-                                <span className="vip-bonus-tag">VIP {result.prize.vipBonus}</span>
+                            {result.multiplier > 1 && (
+                                <span className="vip-bonus-tag">VIP {result.multiplier}x</span>
                             )}
                         </>
                     ) : (
@@ -174,12 +174,12 @@ export default function ScratchGame({ game, onPlay, result, playing, isAvailable
                 </div>
             )}
 
-            {result && !result.error && (
+            {result && result.reward !== undefined && !result.error && (
                 <div className="game-result success">
                     <Gift size={24} />
                     <div>
                         <span className="result-label">Congratulations!</span>
-                        <span className="result-value">{result.prize.finalCredits} Credits Won!</span>
+                        <span className="result-value">{result.reward.toFixed(2)} Credits Won!</span>
                     </div>
                 </div>
             )}

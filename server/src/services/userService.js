@@ -202,10 +202,12 @@ const userService = {
         return { users, total };
     },
 
-    // Sanitize user object (remove password)
+    // Sanitize user object (remove password, add computed properties)
     sanitize(user) {
         if (!user) return null;
         const { password, ...sanitized } = user;
+        // Add computed isAdmin property for frontend convenience
+        sanitized.isAdmin = user.role === 'ADMIN';
         return sanitized;
     },
 

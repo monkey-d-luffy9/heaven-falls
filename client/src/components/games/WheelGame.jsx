@@ -17,10 +17,14 @@ export default function WheelGame({ game, onPlay, result, playing, isAvailable }
     ];
 
     useEffect(() => {
-        if (result && result.prize && !result.error) {
-            // Calculate which segment to land on
-            const prizeValue = result.prize.value;
-            const segmentIndex = segments.findIndex(s => s.value === prizeValue);
+        // Backend returns { game, reward, multiplier } - not prize object
+        if (result && result.reward !== undefined && !result.error) {
+            // Calculate which segment to land on based on reward value
+            const rewardValue = result.reward;
+            // Find closest segment
+            let segmentIndex = segments.findIndex(s => s.value >= rewardValue);
+            if (segmentIndex === -1) segmentIndex = segments.length - 1;
+
             const segmentAngle = 360 / segments.length;
 
             // Calculate target rotation (multiple full spins + landing position)
@@ -109,14 +113,14 @@ export default function WheelGame({ game, onPlay, result, playing, isAvailable }
                 </svg>
             </div>
 
-            {result && !result.error && !isSpinning && (
+            {result && result.reward !== undefined && !result.error && !isSpinning && (
                 <div className="game-result success">
                     <Sparkles size={24} />
                     <div>
                         <span className="result-label">You won!</span>
-                        <span className="result-value">{result.prize.finalCredits} Credits</span>
-                        {result.prize.vipBonus && (
-                            <span className="vip-bonus">VIP Bonus: {result.prize.vipBonus}</span>
+                        <span className="result-value">{result.reward.toFixed(2)} Credits</span>
+                        {result.multiplier > 1 && (
+                            <span className="vip-bonus">VIP Multiplier: {result.multiplier}x</span>
                         )}
                     </div>
                 </div>
